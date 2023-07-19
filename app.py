@@ -71,7 +71,7 @@ with col1:
     st.markdown("Often professionals would like to improve their emails, but don't have the skills to do so. \n\n This tool \
                 will help you improve your email skills by converting your emails into a more professional format. This tool \
                 is powered by [LangChain](https://langchain.com/) and made by \
-                [@shubharthaksangharsha](https://in.linkedin.com/in/shubharthaksangharsha). \n\n View Source Code on [Github](https://github.com/gkamradt/email-fixer/blob/main/main.py)")
+                [@shubharthaksangharsha](https://in.linkedin.com/in/shubharthaksangharsha). \n\n View Source Code on [Github](https://github.com/shubharthaksangharsha/email-fixer/blob/main/app.py)")
 
 with col2:
     st.image(image='TweetScreenshot.png', width=500, caption='https://twitter.com/DannyRichman/status/1598254671591723008')
