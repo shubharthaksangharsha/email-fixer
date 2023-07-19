@@ -7,8 +7,6 @@ from langchain.llms import GooglePalm
 from langchain.memory import ConversationBufferWindowMemory
 
 #env 
-serp_api = os.environ.get("serp_api")
-os.environ["SERPAPI_API_KEY"] = os.environ.get('SERPAPI_API_KEY')
 palm_api = os.environ.get('palm_api')
 
 
