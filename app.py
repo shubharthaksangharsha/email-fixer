@@ -6,7 +6,7 @@ from langchain.prompts import PromptTemplate
 from langchain.llms import GooglePalm, OpenAI
 from langchain.memory import ConversationBufferWindowMemory
 
-#env 
+#set env
 palm_api = os.environ.get('palm_api')
 
 
