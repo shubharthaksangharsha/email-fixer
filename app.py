@@ -3,7 +3,7 @@ import os
 import streamlit as st 
 from langchain.chains import LLMChain
 from langchain.prompts import PromptTemplate
-from langchain.llms import GooglePalm 
+from langchain.llms import GooglePalm, OpenAI
 from langchain.memory import ConversationBufferWindowMemory
 
 #env 
@@ -11,8 +11,11 @@ palm_api = os.environ.get('palm_api')
 
 
 def get_api_key():
-    input_text = st.text_input(label="OpenAI API Key ",  placeholder="Ex: sk-2twmA8tfCb8un4...", key="openai_api_key_input")
-    return input_text
+    option_dialect = st.selectbox(
+        'Select API Key?',
+        ('OpenAI', 'Google Palm'))
+    input_text = st.text_input(label=f"{option_dialect} API Key: ",  placeholder="Ex: sk-2twmA8tfCb8un4...", key="api_key_input", type="password")
+    return input_text, option_dialect
 
 template = """
     Below is an email that may be poorly worded.
@@ -54,10 +57,13 @@ prompt = PromptTemplate(
 )
 email_memory = ConversationBufferWindowMemory(memory_key='chat_history', window_size=5)
 
-def load_LLM(api_key):
+def load_LLM(api_key, llm_option):
     """Logic for loading the chain you want to use should go here."""
-    # Make sure your PALM_KEY is set as an environment variable
-    llm = GooglePalm(temperature=0.5, google_api_key=api_key)
+    llm = None
+    if llm_option == 'OpenAI':
+        llm = OpenAI(temperature=0.5, openai_api_key=api_key)
+    elif llm_option == 'Google Palm':        
+        llm = GooglePalm(temperature=0.5, google_api_key=api_key)
     return llm
 
 
@@ -77,7 +83,7 @@ with col2:
     st.image(image='TweetScreenshot.png', width=500, caption='https://twitter.com/DannyRichman/status/1598254671591723008')
 
 st.markdown("## Enter Your Email To Convert")
-
+key, llm_option = get_api_key()
 col1, col2 = st.columns(2)
 with col1:
     option_tone = st.selectbox(
@@ -107,8 +113,13 @@ st.button("*See An Example*", type='secondary', help="Click to see an example of
 
 st.markdown("### Your Converted Email:")
 
+
 if email_input:
-    llm = load_LLM(api_key=palm_api)
+    if key == None or key == "":
+        st.write("Please enter an API Key.")
+        st.stop()
+        
+    llm = load_LLM(api_key=key, llm_option=llm_option)
 
     llm_chain = LLMChain(llm=llm, prompt=prompt, verbose=True)
     output = llm_chain.run({
